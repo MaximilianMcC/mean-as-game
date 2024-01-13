@@ -12,3 +12,7 @@ This is a simple clone of the game [Factorio](https://www.factorio.com), but wit
 - [ ] First machines
 - [ ] World saving/loading
 - [ ] Fancy main menu
+
+## Ideas
+- [ ] Cartoony pixel art style
+- [ ] Sprite stacking maybe

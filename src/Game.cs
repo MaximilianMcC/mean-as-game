@@ -2,12 +2,14 @@ using Raylib_cs;
 
 class Game
 {
+	public static Player Player;
+
 	public static void Run()
 	{
 		// Raylib stuff
-		Raylib.InitWindow(400, 300, "factorio cloen");
+		Raylib.InitWindow(800, 600, "factorio cloen");
 
-
+		Start();
 		while (!Raylib.WindowShouldClose())
 		{
 			Update();
@@ -17,9 +19,15 @@ class Game
 		Raylib.CloseWindow();
 	}
 
+	private static void Start()
+	{
+		Player = new Player();
+		Player.Start();
+	}
+
 	private static void Update()
 	{
-		
+		Player.Update();
 	}
 
 	private static void Render()
@@ -27,7 +35,7 @@ class Game
 		Raylib.BeginDrawing();
 		Raylib.ClearBackground(Color.MAGENTA);
 
-		Raylib.DrawText("factor", 10, 10, 30, Color.WHITE);
+		Player.Render();
 
 		Raylib.EndDrawing();
 	}
