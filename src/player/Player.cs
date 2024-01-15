@@ -1,11 +1,14 @@
+using System.Diagnostics;
 using System.Numerics;
 using Raylib_cs;
 
-class Player
+class Player : GameObject
 {
 	public static Camera2D Camera;
+	public static Vector2 Position = Vector2.Zero;
+	private static float speed = 1500f;
 
-	public static void Start()
+	public override void Start()
 	{
 		// Create a new camera
 		Camera = new Camera2D()
@@ -17,18 +20,43 @@ class Player
 		};
 	}
 
-	public static void Update()
+	public override void Update()
+	{
+		Movement();
+		// Camera.Target = Position;
+	}
+
+	public override void Render()
+	{
+		Raylib.DrawRectangle((int)Position.X, (int)Position.Y, 100, 100, Color.RED);
+	}
+
+	public override void CleanUp()
 	{
 
 	}
 
-	public static void Render()
+
+
+	private void Movement()
 	{
+		// Get the movement direction vector thing
+		Vector2 movement = Vector2.Zero;
+		if (Raylib.IsKeyDown(KeyboardKey.KEY_W)) movement.Y--;
+		if (Raylib.IsKeyDown(KeyboardKey.KEY_A)) movement.X--;
+		if (Raylib.IsKeyDown(KeyboardKey.KEY_S)) movement.Y++;
+		if (Raylib.IsKeyDown(KeyboardKey.KEY_D)) movement.X++;
 
-	}
+		// Normalize it to ensure speed is the same everywhere
+		if (movement != Vector2.Zero) movement = Vector2.Normalize(movement);
 
-	public static void CleanUp()
-	{
+		// Add speed and whatnot
+		Vector2 newMovement = (movement * speed) * Raylib.GetFrameTime();
+		Vector2 newPosition = Position + newMovement;
 
+		// TODO: Collision detection
+
+		// Apply the movement
+		Position = newPosition;
 	}
 }

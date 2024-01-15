@@ -3,7 +3,7 @@ This is a simple clone of the game [Factorio](https://www.factorio.com), but wit
 
 ## Todo
 - [x] Make a basic RayLib project
-- [ ] Player movement
+- [x] Player movement
 - [ ] Grid system for world
 - [ ] Basic world generation from a seed
 - [ ] Ore and tree generation
