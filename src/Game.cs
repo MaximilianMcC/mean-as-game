@@ -2,46 +2,35 @@ using Raylib_cs;
 
 class Game
 {
-	public static Player Player;
-	public static World World;
-
-	public static int MaxFps = 60;
-
 	public static void Run()
 	{
-		// Raylib stuff
-		Raylib.InitWindow(800, 600, "factorio cloen");
-		Raylib.SetTargetFPS(MaxFps);
+		// Create the raylib stuff
+		Raylib.InitWindow(854, 480, "Factorio clon");
+		Raylib.SetWindowState(ConfigFlags.FLAG_WINDOW_RESIZABLE);
+		Raylib.InitAudioDevice();
 		Raylib.SetExitKey(KeyboardKey.KEY_NULL);
+		Raylib.SetTargetFPS(60);
 
+		// Main game loop
 		Start();
 		while (!Raylib.WindowShouldClose())
 		{
+			// TODO: Also have a Tick() method that will run slower than update. Use this for stuff like machines and whatnot to lower stress on pc
 			Update();
 			Render();
 		}
-
-		Raylib.CloseWindow();
+		CleanUp();
 	}
+
 
 	private static void Start()
 	{
-		Player = new Player();
 		Player.Start();
-
-		// Make a new seed for generating the world
-		// int seed = Raylib.GetRandomValue(0, 99999999);
-		int seed = 12345678;
-
-		// Make the world
-		World = new World(seed);
 	}
 
 	private static void Update()
 	{
 		Player.Update();
-		World.Update();
-		Debug.FPSGraph.Update();
 	}
 
 	private static void Render()
@@ -49,10 +38,24 @@ class Game
 		Raylib.BeginDrawing();
 		Raylib.ClearBackground(Color.MAGENTA);
 
-		World.Render();
+		// Draw world stuff
+		Raylib.BeginMode2D(Player.Camera);
 		Player.Render();
-		Debug.FPSGraph.Render();
+
+		// Draw UI stuff
+		Raylib.EndMode2D();
+		
 
 		Raylib.EndDrawing();
 	}
+
+	private static void CleanUp()
+	{
+		// Clean up Raylib stuff
+		Raylib.CloseAudioDevice();
+		Raylib.CloseWindow();
+
+		Player.CleanUp();
+	}
+
 }
