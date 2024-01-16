@@ -4,6 +4,7 @@ class Game
 {
 	public static List<GameObject> GameObjects;
 	public static Player Player;
+	public static World World;
 
 	public static void Run()
 	{
@@ -31,6 +32,9 @@ class Game
 
 	private static void Start()
 	{
+		// Create/load the world
+		World = new World();
+
 		// Instantiate all of the needed game objects
 		Player = new Player();
 
@@ -43,6 +47,7 @@ class Game
 
 	private static void Update()
 	{
+		World.Update();
 		foreach (GameObject gameObject in GameObjects)
 		{
 			gameObject.Update();
@@ -56,6 +61,7 @@ class Game
 
 		// Draw world stuff
 		Raylib.BeginMode2D(Player.Camera);
+		World.Render();
 		foreach (GameObject gameObject in GameObjects)
 		{
 			gameObject.Render();
@@ -63,7 +69,6 @@ class Game
 
 		// Draw UI stuff
 		Raylib.EndMode2D();
-		
 
 		Raylib.EndDrawing();
 	}

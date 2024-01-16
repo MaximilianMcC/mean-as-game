@@ -22,8 +22,10 @@ class Player : GameObject
 
 	public override void Update()
 	{
+		// Update movement and make the camera track/follow the player
+		// TODO: Make it so the camera stops when the player reaches the end of the world, so they can never see out
 		Movement();
-		// Camera.Target = Position;
+		Camera.Target = Position;
 	}
 
 	public override void Render()
