@@ -27,11 +27,11 @@ class TerrainTile : ITile
 	public void Update() { }
 	public void Render()
 	{
-		Raylib.DrawTextureEx(AssetManager.TerrainTextures[TextureIndex], Position * World.TileSize, 0f, 1f, Color.WHITE);
+		Raylib.DrawTextureEx(AssetManager.TerrainTextures[TextureIndex], Position * World.TileSize * World.TileScale, 0f, World.TileScale, Color.WHITE);
 	}
 }
 
-// Resources like trees, or ore deposits
+// Resources like trees, and ore deposits
 class ResourceTile : ITile
 {
 	public Vector2 Position { get; set; }
@@ -51,7 +51,7 @@ class MachineTile : ITile
 	public void Render() { }
 }
 
-// Buildings like floor and walls
+// Buildings like floors and walls
 class BuildTile : ITile
 {
 	public Vector2 Position { get; set; }

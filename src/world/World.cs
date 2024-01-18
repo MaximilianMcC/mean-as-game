@@ -14,6 +14,7 @@ class World
 	public static int Height;
 
 	public static int TileSize = 64;
+	public static int TileScale = 3;
 
 	public World()
 	{
