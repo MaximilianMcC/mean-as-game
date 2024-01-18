@@ -25,7 +25,10 @@ class TerrainTile : ITile
 	}
 
 	public void Update() { }
-	public void Render() { }
+	public void Render()
+	{
+		Raylib.DrawTextureEx(AssetManager.TerrainTextures[TextureIndex], Position * World.TileSize, 0f, 1f, Color.WHITE);
+	}
 }
 
 // Resources like trees, or ore deposits

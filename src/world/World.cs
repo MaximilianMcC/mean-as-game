@@ -1,3 +1,5 @@
+using System.Numerics;
+
 class World
 {
 	// All of the different tiles
@@ -10,6 +12,8 @@ class World
 	//? Grid size btw, not physical size
 	public static int Width;
 	public static int Height;
+
+	public static int TileSize = 64;
 
 	public World()
 	{
@@ -28,25 +32,28 @@ class World
 		// TODO: Use perlin noise based off a seed to make the world
 		for (int i = 0; i < gridArea; i++)
 		{
+			// Get the current coordinates
 			int x = i % Width;
 			int y = i / Width;
-			
+
+			// Grass
+			Terrain[i] = new Grass(new Vector2(x, y));
 		}
 	}
 
 	public static void Update()
 	{
 		foreach (TerrainTile tile in Terrain) tile.Update();
-		foreach (ResourceTile tile in Resources) tile.Update();
-		foreach (MachineTile tile in Machines) tile.Update();
-		foreach (BuildTile tile in Builds) tile.Update();
+		// foreach (ResourceTile tile in Resources) tile.Update();
+		// foreach (MachineTile tile in Machines) tile.Update();
+		// foreach (BuildTile tile in Builds) tile.Update();
 	}
 
 	public static void Render()
 	{
 		foreach (TerrainTile tile in Terrain) tile.Render();
-		foreach (ResourceTile tile in Resources) tile.Render();
-		foreach (MachineTile tile in Machines) tile.Render();
-		foreach (BuildTile tile in Builds) tile.Render();
+		// foreach (ResourceTile tile in Resources) tile.Render();
+		// foreach (MachineTile tile in Machines) tile.Render();
+		// foreach (BuildTile tile in Builds) tile.Render();
 	}
 }

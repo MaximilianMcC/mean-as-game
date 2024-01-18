@@ -15,6 +15,10 @@ class Game
 		Raylib.SetExitKey(KeyboardKey.KEY_NULL);
 		Raylib.SetTargetFPS(60);
 
+		// Load all of the assets
+		// TODO: Loading screen
+		AssetManager.LoadTextures();
+
 		// Make the list of game objects to store everything
 		GameObjects = new List<GameObject>();
 
@@ -79,10 +83,14 @@ class Game
 		Raylib.CloseAudioDevice();
 		Raylib.CloseWindow();
 
+		// Game objects
 		foreach (GameObject gameObject in GameObjects)
 		{
 			gameObject.CleanUp();
 		}
+
+		// Textures
+		AssetManager.UnloadTextures();
 	}
 
 }

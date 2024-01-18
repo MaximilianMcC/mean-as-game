@@ -38,8 +38,6 @@ class Player : GameObject
 
 	}
 
-
-
 	private void Movement()
 	{
 		// Get the movement direction vector thing
