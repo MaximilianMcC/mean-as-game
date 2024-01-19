@@ -10,7 +10,7 @@ class Player : GameObject
 
 	public static float Width = 100f;
 
-	public static Vector2 HighlightedTile;
+	public static Vector2 HighlightedTile = Vector2.Zero;
 
 	public override void Start()
 	{
@@ -36,11 +36,16 @@ class Player : GameObject
 
 	public override void Render()
 	{
+		Raylib.DrawText(HighlightedTile.ToString(), 10, 45, 30, Color.WHITE);
+
 		// Draw the player
 		Raylib.DrawRectangle((int)Position.X, (int)Position.Y, (int)Width, 100, Color.RED);
 
 		// Draw the highlighted tile
-		Raylib.DrawRectangle((int)HighlightedTile.X * World.TileSize, (int)HighlightedTile.Y * World.TileSize, World.TileSize * World.TileScale, World.TileSize * World.TileScale, new Color(0, 0, 255, 128));
+		// Raylib.DrawRectangleRec(new Rectangle(HighlightedTile.X * World.TileSize, HighlightedTile.Y * World.TileSize, World.TileSize, World.TileSize), new Color(0, 128, 255, 128));
+		// Raylib.DrawRectangleRec(new Rectangle(HighlightedTile.X * World.TileSize * World.TileScale, HighlightedTile.Y * World.TileSize * World.TileScale, World.TileSize * World.TileScale, World.TileSize * World.TileScale), new Color(0, 128, 255, 128));
+		// Raylib.DrawRectangleRec(new Rectangle(HighlightedTile.X * World.TileSize * World.TileScale, HighlightedTile.Y * World.TileSize * World.TileScale, World.TileSize * World.TileScale, World.TileSize * World.TileScale), new Color(0, 128, 255, 128));
+		Raylib.DrawRectangleRec(new Rectangle(HighlightedTile.X * World.TileSize * World.TileScale, HighlightedTile.Y * World.TileSize * World.TileScale, World.TileSize * World.TileScale, World.TileSize * World.TileScale), new Color(0, 128, 255, 128));
 	}
 
 	public override void CleanUp()
@@ -78,9 +83,16 @@ class Player : GameObject
 		Vector2 worldCoordinates = Raylib.GetScreenToWorld2D(screenCoordinates, Camera);
 
 		// Snap the world coordinates to the grid
-		HighlightedTile = new Vector2(
-			(int)worldCoordinates.X / World.TileSize,
-			(int)worldCoordinates.Y / World.TileSize
+		Vector2 currentHighlightedTile = new Vector2(
+			(int)(worldCoordinates.X / (World.TileSize * World.TileScale)),
+			(int)(worldCoordinates.Y / (World.TileSize * World.TileScale))
 		);
+
+		// Check for if the tile is out of bounds and leave it on the last valid tile
+		if (currentHighlightedTile.X < 0 || currentHighlightedTile.X > World.Width - 1) return;
+		if (currentHighlightedTile.Y < 0 || currentHighlightedTile.Y > World.Height - 1) return;
+
+		// Update the highlighted tile because its within the bounds
+		HighlightedTile = currentHighlightedTile;
 	}
 }
