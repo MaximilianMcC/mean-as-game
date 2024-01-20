@@ -3,6 +3,7 @@ using Raylib_cs;
 class AssetManager
 {
 	public static List<Texture2D> TerrainTextures;
+	public static Texture2D SelectionTexture;
 
 	// Load in all of the textures that the game needs
 	public static void LoadTextures()
@@ -12,8 +13,12 @@ class AssetManager
 		TerrainTextures = new List<Texture2D>()
 		{
 			Raylib.LoadTexture("./assets/tiles/terrain/grass.png"),
+			Raylib.LoadTexture("./assets/tiles/terrain/grass2.png"),
 			Raylib.LoadTexture("./assets/tiles/terrain/dirt.png"),
 		};
+
+		// Load in the selection texture
+		SelectionTexture = Raylib.LoadTexture("./assets/ui/select.png");
 	}
 
 	// Unload all of the textures
@@ -24,5 +29,8 @@ class AssetManager
 		{
 			Raylib.UnloadTexture(texture);
 		}
+
+		// Selection texture
+		Raylib.UnloadTexture(SelectionTexture);
 	}
 }

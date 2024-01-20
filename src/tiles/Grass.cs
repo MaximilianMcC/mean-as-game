@@ -1,10 +1,10 @@
 using System.Numerics;
+using Raylib_cs;
 
 class Grass : TerrainTile
 {
 	public Grass(Vector2 position) : base(position)
 	{
-		// TODO: More grass textures, and get a random one
-		TextureIndex = 0;
+		TextureIndex = Raylib.GetRandomValue(0, 1);
 	}
 }

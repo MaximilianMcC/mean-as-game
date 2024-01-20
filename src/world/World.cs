@@ -13,8 +13,9 @@ class World
 	public static int Width;
 	public static int Height;
 
-	public static int TileSize = 64;
-	public static int TileScale = 3;
+	public static int TileSize = 32;
+	public static int TileScale = 5;
+	public static readonly int TileMultiplier = TileSize * TileScale;
 
 	public World()
 	{

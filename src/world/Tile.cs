@@ -27,7 +27,7 @@ class TerrainTile : ITile
 	public void Update() { }
 	public void Render()
 	{
-		Raylib.DrawTextureEx(AssetManager.TerrainTextures[TextureIndex], Position * World.TileSize * World.TileScale, 0f, World.TileScale, Color.WHITE);
+		Raylib.DrawTextureEx(AssetManager.TerrainTextures[TextureIndex], Position * World.TileMultiplier, 0f, World.TileScale, Color.WHITE);
 	}
 }
 

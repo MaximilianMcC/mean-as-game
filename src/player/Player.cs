@@ -36,16 +36,11 @@ class Player : GameObject
 
 	public override void Render()
 	{
-		Raylib.DrawText(HighlightedTile.ToString(), 10, 45, 30, Color.WHITE);
-
 		// Draw the player
 		Raylib.DrawRectangle((int)Position.X, (int)Position.Y, (int)Width, 100, Color.RED);
 
-		// Draw the highlighted tile
-		// Raylib.DrawRectangleRec(new Rectangle(HighlightedTile.X * World.TileSize, HighlightedTile.Y * World.TileSize, World.TileSize, World.TileSize), new Color(0, 128, 255, 128));
-		// Raylib.DrawRectangleRec(new Rectangle(HighlightedTile.X * World.TileSize * World.TileScale, HighlightedTile.Y * World.TileSize * World.TileScale, World.TileSize * World.TileScale, World.TileSize * World.TileScale), new Color(0, 128, 255, 128));
-		// Raylib.DrawRectangleRec(new Rectangle(HighlightedTile.X * World.TileSize * World.TileScale, HighlightedTile.Y * World.TileSize * World.TileScale, World.TileSize * World.TileScale, World.TileSize * World.TileScale), new Color(0, 128, 255, 128));
-		Raylib.DrawRectangleRec(new Rectangle(HighlightedTile.X * World.TileSize * World.TileScale, HighlightedTile.Y * World.TileSize * World.TileScale, World.TileSize * World.TileScale, World.TileSize * World.TileScale), new Color(0, 128, 255, 128));
+		// Draw the highlighted/selected tile
+		Raylib.DrawTextureEx(AssetManager.SelectionTexture, HighlightedTile * World.TileMultiplier, 0f, World.TileScale, Color.WHITE);
 	}
 
 	public override void CleanUp()
@@ -75,7 +70,7 @@ class Player : GameObject
 		Position = newPosition;
 	}
 
-	// Highlight the current tile that the player is on
+	// Highlight the current tile that the players mouse is over
 	private void Highlight()
 	{
 		// Get the mouses coordinates, then convert them to world coordinates
