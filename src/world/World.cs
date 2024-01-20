@@ -1,4 +1,5 @@
 using System.Numerics;
+using Raylib_cs;
 
 class World
 {
@@ -13,11 +14,12 @@ class World
 	public static int Width;
 	public static int Height;
 
+	// Size stuff
 	public static int TileSize = 32;
-	public static int TileScale = 5;
+	public static int TileScale = 2;
 	public static readonly int TileMultiplier = TileSize * TileScale;
 
-	public World()
+	public World(int seed)
 	{
 		// Set world properties
 		Width = 16;
@@ -29,6 +31,11 @@ class World
 		Resources = new ResourceTile[gridArea];
 		Machines = new MachineTile[gridArea];
 		Builds = new BuildTile[gridArea];
+
+
+		// Create the perlin noise for the terrain using the seed
+		GenerateTerrain(seed);
+
 
 		// Populate the terrain one with grass for now
 		// TODO: Use perlin noise based off a seed to make the world
@@ -57,5 +64,29 @@ class World
 		// foreach (ResourceTile tile in Resources) tile.Render();
 		// foreach (MachineTile tile in Machines) tile.Render();
 		// foreach (BuildTile tile in Builds) tile.Render();
+	}
+
+
+
+
+	//! unsafe
+	// TODO: Don't do unsafe
+	private static unsafe void GenerateTerrain(int seed)
+	{
+		//! idk if this is the correct way to use the seed, but it works
+		Image perlinNoise = Raylib.GenImagePerlinNoise(Width * TileMultiplier, Height * TileMultiplier, seed, seed, 1f);
+		Color* pixels = Raylib.LoadImageColors(perlinNoise);
+
+		for (int i = 0; i < Width * Height; i++)
+		{
+			// Get the coordinates of the current pixel
+			int x = i % Width;
+			int y = i / Width;
+			
+			// Get the pixels brightness (0 - 255)
+			// TODO: Maybe change brightness to a float from 0 - 1, but this should be good for now
+			//! I don't think that this is 100% accurate, but it doesn't need to be 100% accurate
+			float brightness = (pixels[i].R + pixels[i].G + pixels[i].B) / 3;
+		}
 	}
 }

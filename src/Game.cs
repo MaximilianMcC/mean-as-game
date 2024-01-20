@@ -37,7 +37,7 @@ class Game
 	private static void Start()
 	{
 		// Create/load the world
-		World = new World();
+		World = new World(500);
 
 		// Instantiate all of the needed game objects
 		Player = new Player();
