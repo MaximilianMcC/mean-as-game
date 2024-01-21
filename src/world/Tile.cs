@@ -37,8 +37,16 @@ class ResourceTile : ITile
 	public Vector2 Position { get; set; }
 	public int TextureIndex { get; set; }
 
+	public ResourceTile(Vector2 position)
+	{
+		Position = position;
+	}
+
 	public void Update() { }
-	public void Render() { }
+	public void Render()
+	{
+		Raylib.DrawTextureEx(AssetManager.ResourceTextures[TextureIndex], Position * World.TileMultiplier, 0f, World.TileScale, Color.WHITE);
+	}
 }
 
 // Machines like miners, furnaces, conveyor belts, etc
