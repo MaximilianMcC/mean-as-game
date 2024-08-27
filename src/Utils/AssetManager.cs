@@ -79,8 +79,8 @@ class AssetManager
 		// Get the asset byte array and extension
 		byte[] bytes = GetAssetBytes(path, out string extension);
 
-    	// Define the character set (e.g., ASCII characters 32-126)
-    	int[] fontChars = Enumerable.Range(32, 95).ToArray(); // ASCII characters from 32 to 126
+    	// ASCII for characters are from 32 to 126
+    	int[] fontChars = Enumerable.Range(32, 126).ToArray(); 
 
 		// Load the font from the raw bytes
 		Font font = Raylib.LoadFontFromMemory(extension, bytes, 32, fontChars, fontChars.Length);
