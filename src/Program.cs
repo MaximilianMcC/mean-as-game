@@ -11,7 +11,7 @@ class Program
 	{
 		Raylib.SetTraceLogLevel(TraceLogLevel.Warning);
 		Raylib.InitWindow(800, 600, "mean as game (really cool (epic))");
-		
+
 		Game.Start();
 		while (!Raylib.WindowShouldClose())
 		{
