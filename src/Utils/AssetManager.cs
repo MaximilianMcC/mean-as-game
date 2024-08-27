@@ -88,4 +88,17 @@ class AssetManager
 		// Give back the font
 		return font;
 	}
+
+	//! Debug
+	// TODO: Make it so you can press a button and it will show this or something (debug)
+	public static void PrintEmbeddedAssets()
+	{
+		// Get all of the assets that are embedded rn
+		Assembly assembly = Assembly.GetExecutingAssembly();
+		string[] assets = assembly.GetManifestResourceNames();
+		
+		// Print them all
+		Console.WriteLine("All embedded assets:");
+		foreach (string asset in assets) Console.WriteLine(asset);
+	}
 }
