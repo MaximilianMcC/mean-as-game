@@ -5,10 +5,13 @@ class Player : Entity
 {
 	//? moveForce is acceleration btw
 	private float moveForce = 200f;
-	private float frictionCoefficient = 0.8f;
+	private float frictionCoefficient = 0.9f;
 
 	public override void Start()
 	{
+		// Set the hitbox size
+		Hitbox = new Rectangle(0, 0, 50, 50);
+
 		Textures.Add("player", AssetManager.LoadTexture("./assets/test.png"));
 	}
 
@@ -27,7 +30,10 @@ class Player : Entity
 
 		// Apply friction to allow the player
 		// to eventually stop
+		// TODO: Make this frame independent
+		//! make frame independent rn please (top priority)
 		Velocity.X *= frictionCoefficient;
+		if (MathF.Abs(Velocity.X) < 0.1f) Velocity.X = 0f;
 
 		// Actually move
 		Hitbox.Position += Velocity;
@@ -35,7 +41,7 @@ class Player : Entity
 
 	public override void Render()
 	{
-		Raylib.DrawTextureV(Textures["player"], Hitbox.Position, Color.White);
+		Utils.DrawTextureOnRectangle(Textures["player"], Hitbox);
 		Raylib.DrawText($"{Hitbox.Position}\t{Velocity}", 100, 100, 45, Color.White);
 	}
 }
