@@ -41,9 +41,19 @@ class Player : Entity
 		Velocity.X *= MathF.Pow(frictionCoefficient, deltaTime);
 		if (MathF.Abs(Velocity.X) < 0.1f) Velocity.X = 0f;
 
-		// Update the players position
-		// based on the force
-		Hitbox.Position += Velocity * deltaTime;
+		// Get the new hitbox
+		Rectangle newHitbox = Hitbox;
+		newHitbox.Position += Velocity * deltaTime;
+
+		// Check for if the new position is valid or not
+		if (Map.IsCollidingX(newHitbox))
+		{
+			Velocity.X = 0f;
+			return;
+		}
+
+		// Move bro
+		Hitbox = newHitbox;
 	}
 
 	public override void Render()

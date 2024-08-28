@@ -14,6 +14,8 @@ class Game
 		player = new Player();
 		gameObjects.Add(player);
 
+		Map.Load("debugulations map (debuggulating rn (test))");
+		Map.DynamicObjects.Add(player);
 	}
 
 	public static void Update()
@@ -29,11 +31,11 @@ class Game
 		Raylib.BeginDrawing();
 		Raylib.ClearBackground(Color.Magenta);
 
+		Map.Render();
 		foreach (GameObject gameObject in gameObjects)
 		{
 			gameObject.Render();
 		}
-		Raylib.DrawTextEx(Ui.TimesNewRoman, "erhm", new Vector2(10), 35f, (35f / 10f), Color.White);
 
 		Raylib.EndDrawing();
 	}
