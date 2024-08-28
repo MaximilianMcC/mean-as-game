@@ -1,47 +1,54 @@
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using Raylib_cs;
 
 class Player : Entity
 {
 	//? moveForce is acceleration btw
-	private float moveForce = 200f;
-	private float frictionCoefficient = 0.9f;
+	// TODO: Make coefficient between 0-1
+	private float mass = 60f;
+	private float moveForce = 80f;
+	private float frictionCoefficient = 0.001f; 
 
 	public override void Start()
 	{
 		// Set the hitbox size
-		Hitbox = new Rectangle(0, 0, 50, 50);
+		Hitbox = new Rectangle(10, 10, 100f, 80f);
 
 		Textures.Add("player", AssetManager.LoadTexture("./assets/test.png"));
 	}
 
 	public override void Update()
 	{
+		// Get delta time right at the start for if
+		// it changes while the method getting ran
+		float deltaTime = Raylib.GetFrameTime();
+
 		// Check for if we wanna move and get the
 		// direction to move in
 		float xDirection = 0;
 		if (Raylib.IsKeyDown(KeyboardKey.Left)) xDirection = -1;
 		if (Raylib.IsKeyDown(KeyboardKey.Right)) xDirection = 1;
 
-		// Convert the direction to a force
-		// that we can use to actually move
-		float force = (moveForce * xDirection) * Raylib.GetFrameTime();
+		// Get a movement force based on the direction
+		float force = ((mass * moveForce) * xDirection) * deltaTime;
 		Velocity.X += force;
 
-		// Apply friction to allow the player
-		// to eventually stop
-		// TODO: Make this frame independent
-		//! make frame independent rn please (top priority)
-		Velocity.X *= frictionCoefficient;
+		// Apply friction
+		// TODO: Use friction = coefficient * normalForce (real formula irl)
+		// TODO: Apply air resistance (y)
+		//! This isn't EXACTLY frame independent, but its good enough
+		Velocity.X *= MathF.Pow(frictionCoefficient, deltaTime);
 		if (MathF.Abs(Velocity.X) < 0.1f) Velocity.X = 0f;
 
-		// Actually move
-		Hitbox.Position += Velocity;
+		// Update the players position
+		// based on the force
+		Hitbox.Position += Velocity * deltaTime;
 	}
 
 	public override void Render()
 	{
 		Utils.DrawTextureOnRectangle(Textures["player"], Hitbox);
-		Raylib.DrawText($"{Hitbox.Position}\t{Velocity}", 100, 100, 45, Color.White);
+		Raylib.DrawTextEx(Ui.TimesNewRoman, $"velocity: {Velocity}", new Vector2(10, 500), 35f, (35f / 10f), Color.White);
 	}
 }
