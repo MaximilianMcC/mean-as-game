@@ -1,20 +1,15 @@
 using System.Numerics;
-using System.Runtime.CompilerServices;
 using Raylib_cs;
 
 class Player : Entity
 {
-	//? moveForce is acceleration btw
-	// TODO: Make coefficient between 0-1
-	private float mass = 60f;
-	private float moveForce = 80f;
-	private float frictionCoefficient = 0.001f; 
+	private float moveForce = 400f;
+	private float jumpForce = 100f;
 
 	public override void Start()
 	{
-		// Set the hitbox size
-		Hitbox = new Rectangle(10, 10, 100f, 80f);
-
+		// Set the hitbox size and load the player texture
+		Hitbox = new Rectangle(50, 10, 100f, 80f);
 		Textures.Add("player", AssetManager.LoadTexture("./assets/test.png"));
 	}
 
@@ -30,35 +25,31 @@ class Player : Entity
 		if (Raylib.IsKeyDown(KeyboardKey.Left)) xDirection = -1;
 		if (Raylib.IsKeyDown(KeyboardKey.Right)) xDirection = 1;
 
-		// Get a movement force based on the direction
-		float force = ((mass * moveForce) * xDirection) * deltaTime;
-		Velocity.X += force;
+		// Set the force based on the movement
+		// TODO: Increase velocity, not assign
+		float force = (moveForce * xDirection) * deltaTime;
+		Velocity.X = force;
 
-		// Apply friction
-		// TODO: Use friction = coefficient * normalForce (real formula irl)
-		// TODO: Apply air resistance (y)
-		//! This isn't EXACTLY frame independent, but its good enough
-		Velocity.X *= MathF.Pow(frictionCoefficient, deltaTime);
-		if (MathF.Abs(Velocity.X) < 0.1f) Velocity.X = 0f;
+		// Apply gravity
+		// Velocity.Y += Map.Gravity * deltaTime;
 
-		// Get the new hitbox
+		// Get what the new position will be based
+		// off the movement bros just done
 		Rectangle newHitbox = Hitbox;
-		newHitbox.Position += Velocity * deltaTime;
+		newHitbox.Position += Velocity;
 
-		// Check for if the new position is valid or not
-		if (Map.IsCollidingX(newHitbox))
-		{
-			Velocity.X = 0f;
-			return;
-		}
+		// Check for X collisions
+		newHitbox.X += Map.ResolveXCollisions(Hitbox, newHitbox);
+		Hitbox.X = newHitbox.X;
 
-		// Move bro
-		Hitbox = newHitbox;
+		// Check for X and Y collision
+		// Hitbox.X += Map.ResolveXCollisions(Hitbox, newHitbox);
+		// Hitbox.Y += Map.ResolveYCollisions(Hitbox, newHitbox);
 	}
 
 	public override void Render()
 	{
 		Utils.DrawTextureOnRectangle(Textures["player"], Hitbox);
-		Raylib.DrawTextEx(Ui.TimesNewRoman, $"velocity: {Velocity}", new Vector2(10, 500), 35f, (35f / 10f), Color.White);
+		Raylib.DrawTextEx(Ui.TimesNewRoman, $"position: {Hitbox.Position}\n\nvelocity: {Velocity}\n\nground: {OnGround}", new Vector2(10, 400), 35f, (35f / 10f), Color.White);
 	}
 }

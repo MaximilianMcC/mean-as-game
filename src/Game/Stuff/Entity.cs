@@ -5,4 +5,5 @@ class Entity : GameObject
 {
 	public Rectangle Hitbox;
 	public Vector2 Velocity;
+	public bool OnGround;
 }

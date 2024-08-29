@@ -14,7 +14,7 @@ class Map
 	public static void Load(string filePath)
 	{
 		Name = filePath;
-		Gravity = 9.81f;
+		Gravity = 0.5f;
 
 		//! Hardcoding for now
 		//TODO: Design file format thing
@@ -23,55 +23,63 @@ class Map
 		StaticObjects = new List<Rectangle>()
 		{
 			// some sort of a wall idk
-			new Rectangle(400, 50, 40, 300)
+			new Rectangle(600, 50, 15, 300),
+			new Rectangle(10, 50, 15, 300),
+
+			// Floor thingy
+			new Rectangle(50, 300, 400, 15)
 		};
 	}
 
 	public static void Render()
 	{
-		// Loop over every thing in the map and draw it
+		// Loop over everything in the map and draw it
 		foreach (Rectangle thing in StaticObjects)
 		{
 			// TODO: Allocate some budget to this
-			Raylib.DrawRectangleRec(thing, Color.Red);
+			Raylib.DrawRectangleRec(thing, Color.White);
 		}
 
 		Raylib.DrawTextEx(Ui.TimesNewRoman, Name, new Vector2(10), 35f, (35f / 10f), Color.White);
 	}
 
-	// Check for if something is colliding with the map on the X axis
-	public static bool IsCollidingX(Rectangle thingToCheck)
+	public static float ResolveXCollisions(Rectangle current, Rectangle potential)
 	{
 		// Loop through everything in the map
-		foreach (Rectangle thing in StaticObjects)
+		// TODO: Also do for dynamic things
+		foreach (Rectangle mapObject in StaticObjects)
 		{
-			// Check for if there is X collision
-			// TODO: Make this look nicer
-			if (
-				thingToCheck.X < thing.X + thing.Width &&
-				thingToCheck.X + thingToCheck.Width > thing.X
-			) return true;
+			// Check for if there was any collision
+			// (not in the mood to waste time fr)
+			if (!Raylib.CheckCollisionRecs(potential, mapObject)) continue;
+
+			// If there was collision then figure out how
+			// much we need to adjust the hitbox so that its
+			// just outside the collision area (not colliding)
+
+			// Check for what direction we're moving
+			// and resolve the collision for that direction
+			if (potential.X < current.X)
+			{
+				// Moving left so we gotta shift the
+				// thing over towards the right
+				return (mapObject.X + mapObject.Width) - potential.X;
+			}
+			else if (potential.X > current.X)
+			{
+				// Moving right so we gotta shift the
+				// thing over towards the left
+				return mapObject.X - (potential.X + potential.Width);
+			}
 		}
 
 		// There was no collision
-		return false;
+		return 0f;
 	}
 
-	// Check for if something is colliding with the map on the Y axis
-	public static bool IsCollidingY(Rectangle thingToCheck)
-	{
-		// Loop through everything in the map
-		foreach (Rectangle thing in StaticObjects)
-		{
-			// Check for if there is Y collision
-			// TODO: Make this look nicer
-			if (
-				thingToCheck.Y < thing.Y + thing.Height &&
-				thingToCheck.Y + thingToCheck.Height > thing.Y
-			) return true;
-		}
 
-		// There was no collision
-		return false;
+	public static float ResolveYCollisions(Rectangle current, Rectangle potential)
+	{
+		return 0f;
 	}
 }
