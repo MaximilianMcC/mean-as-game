@@ -5,6 +5,7 @@ class Player : Entity
 {
 	private float speed = 400f;
 	private float jumpForce = 800f;
+	private float direction;
 
 	public override void Start()
 	{
@@ -26,7 +27,7 @@ class Player : Entity
 		// Get the direction that the player
 		// wants to move in
 		// TODO: Move all the gravity stuff up to the top then only run x movement if we move yk
-		float direction = 0;
+		direction = 0;
 		if (Raylib.IsKeyDown(KeyboardKey.Left)) direction = -1;
 		if (Raylib.IsKeyDown(KeyboardKey.Right)) direction = 1;
 
@@ -36,6 +37,7 @@ class Player : Entity
 		CheckCollisionAndMove(Vector2.UnitX * xMovement);
 
 		// If we're on the ground then jump
+		// (don't want bro to jump mid air)
 		if (Raylib.IsKeyPressed(KeyboardKey.Space) && OnGround)
 		{
 			// Jump and say that we're not on the
@@ -50,7 +52,10 @@ class Player : Entity
 
 	public override void Render()
 	{
-		Utils.DrawTextureOnRectangle(Animations["walk"].GetFrame(), Hitbox);
+		if (direction == 0) direction = 1;
+		Utils.DrawTextureOnRectangle(Animations["walk"].GetFrame(), Hitbox, (int)direction, 1);
+
+
 		Raylib.DrawTextEx(Ui.TimesNewRoman, $"position: {Hitbox.Position}\n\nY velocity: {yVelocity}\n\nground: {OnGround}", new Vector2(10, 400), 35f, (35f / 10f), Color.White);
 	}
 }
