@@ -8,14 +8,17 @@ class Player : Entity
 
 	public override void Start()
 	{
-		// Set the hitbox size and load the player texture
+		// Set the hitbox size
 		Hitbox = new Rectangle(50, 10, 100f, 80f);
-		Textures.Add("player", AssetManager.LoadTexture("./assets/test.png"));
+
+		// Load the animations
+		Animations.Add("walk", new Animation("./assets/player-walk.png", 64, 10));
 	}
 
 	public override void Update()
 	{
 		Movement();
+		Animations["walk"].Animate();
 	}
 
 	private void Movement()
@@ -47,7 +50,7 @@ class Player : Entity
 
 	public override void Render()
 	{
-		Utils.DrawTextureOnRectangle(Textures["player"], Hitbox);
+		Utils.DrawTextureOnRectangle(Animations["walk"].GetFrame(), Hitbox);
 		Raylib.DrawTextEx(Ui.TimesNewRoman, $"position: {Hitbox.Position}\n\nY velocity: {yVelocity}\n\nground: {OnGround}", new Vector2(10, 400), 35f, (35f / 10f), Color.White);
 	}
 }
