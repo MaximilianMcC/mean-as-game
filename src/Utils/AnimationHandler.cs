@@ -75,7 +75,7 @@ class Animation
 		return frames[currentFrame];
 	}
 
-	public void CleanUp()
+	public void Unload()
 	{
 		// Get rid of all the frames
 		for (int i = 0; i < totalFrames; i++)
