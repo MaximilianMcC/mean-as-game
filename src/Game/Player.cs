@@ -3,8 +3,8 @@ using Raylib_cs;
 
 class Player : Entity
 {
-	private float moveForce = 400f;
-	private float jumpForce = 100f;
+	private float speed = 400f;
+	private float jumpForce = 800f;
 
 	public override void Start()
 	{
@@ -15,41 +15,39 @@ class Player : Entity
 
 	public override void Update()
 	{
-		// Get delta time right at the start for if
-		// it changes while the method getting ran
-		float deltaTime = Raylib.GetFrameTime();
+		Movement();
+	}
 
-		// Check for if we wanna move and get the
-		// direction to move in
-		float xDirection = 0;
-		if (Raylib.IsKeyDown(KeyboardKey.Left)) xDirection = -1;
-		if (Raylib.IsKeyDown(KeyboardKey.Right)) xDirection = 1;
+	private void Movement()
+	{
+		// Get the direction that the player
+		// wants to move in
+		// TODO: Move all the gravity stuff up to the top then only run x movement if we move yk
+		float direction = 0;
+		if (Raylib.IsKeyDown(KeyboardKey.Left)) direction = -1;
+		if (Raylib.IsKeyDown(KeyboardKey.Right)) direction = 1;
 
-		// Set the force based on the movement
-		// TODO: Increase velocity, not assign
-		float force = (moveForce * xDirection) * deltaTime;
-		Velocity.X = force;
+		// Apply speed to the direction to get the movement
+		// then check for collisions and move bro
+		float xMovement = (direction * speed) * Raylib.GetFrameTime();
+		CheckCollisionAndMove(Vector2.UnitX * xMovement);
 
-		// Apply gravity
-		// Velocity.Y += Map.Gravity * deltaTime;
+		// If we're on the ground then jump
+		if (Raylib.IsKeyPressed(KeyboardKey.Space) && OnGround)
+		{
+			// Jump and say that we're not on the
+			// ground anymore (jumping (in the air))
+			yVelocity = -jumpForce;
+			OnGround = false;
+		}
 
-		// Get what the new position will be based
-		// off the movement bros just done
-		Rectangle newHitbox = Hitbox;
-		newHitbox.Position += Velocity;
-
-		// Check for X collisions
-		newHitbox.X += Map.ResolveXCollisions(Hitbox, newHitbox);
-		Hitbox.X = newHitbox.X;
-
-		// Check for X and Y collision
-		// Hitbox.X += Map.ResolveXCollisions(Hitbox, newHitbox);
-		// Hitbox.Y += Map.ResolveYCollisions(Hitbox, newHitbox);
+		// Gravity
+		ApplyGravity();
 	}
 
 	public override void Render()
 	{
 		Utils.DrawTextureOnRectangle(Textures["player"], Hitbox);
-		Raylib.DrawTextEx(Ui.TimesNewRoman, $"position: {Hitbox.Position}\n\nvelocity: {Velocity}\n\nground: {OnGround}", new Vector2(10, 400), 35f, (35f / 10f), Color.White);
+		Raylib.DrawTextEx(Ui.TimesNewRoman, $"position: {Hitbox.Position}\n\nY velocity: {yVelocity}\n\nground: {OnGround}", new Vector2(10, 400), 35f, (35f / 10f), Color.White);
 	}
 }

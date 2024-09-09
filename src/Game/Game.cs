@@ -9,13 +9,11 @@ class Game
 	public static void Start()
 	{
 		Ui.Load();
+		Map.Load();
 		gameObjects = new List<GameObject>();
 
 		player = new Player();
 		gameObjects.Add(player);
-
-		Map.Load("debugulations map (debuggulating rn (test))");
-		Map.DynamicObjects.Add(player);
 	}
 
 	public static void Update()
