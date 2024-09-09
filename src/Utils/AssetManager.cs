@@ -40,14 +40,23 @@ class AssetManager
 
 	}
 
-	public static Texture2D LoadTexture(string path)
+	public static Image LoadImage(string path)
 	{
 		// Get the asset byte array and extension
 		byte[] bytes = GetAssetBytes(path, out string extension);
 
-		// Load the raylib image from the byte array
-		// then load the raylib texture from the image
+		// Load the image from the byte array
 		Image image = Raylib.LoadImageFromMemory(extension, bytes);
+
+		// Give back the loaded image
+		return image;
+	}
+
+	public static Texture2D LoadTexture(string path)
+	{
+		// Load the texture as an image
+		// then convert it to a texture
+		Image image = LoadImage(path);
 		Texture2D texture = Raylib.LoadTextureFromImage(image);
 
 		// Unload the image since we no longer need it
