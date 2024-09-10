@@ -27,44 +27,69 @@ class DialogueHandler
 	{
 		if (ShowCaptions == false) return;
 
+		// TODO: Put all this stuff in settings
+		const float fontSize = 20f;
+		const float fontSpacing = fontSize / 10;
+		const float lineSpacing = fontSize / 2;
+		Color boxColor = new Color(0, 0, 0, 128);
+
 		// Get the width allowed for the caption
 		const float captionBoxPadding = 50f;
+		const float captionBoxMargin = 50f;
 		float boxWidth = Raylib.GetScreenWidth() - captionBoxPadding - captionBoxPadding;
+
+		// Set the initial position to draw from the bottom of the screen
+		// TODO: Make it so you can specify if caption goes on top or bottom
+		float y = Raylib.GetScreenHeight() - captionBoxMargin;
 
 		// Loop over every caption we're showing
 		foreach (Caption caption in captions)
 		{
-			// Grab a copy of the text since we're
-			// gonna be manipulating it a bit
-			string text = caption.Text;
+			// Split the text into words and store out new output
+			string[] words = caption.Text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+			string output = "";
 
-			// Measure the text
-			// TODO: Put font size and whatnot in settings
-			const float fontSize = 30f;
-			Vector2 textSize = Raylib.MeasureTextEx(Ui.Gabriola, text, fontSize, (fontSize / 10f));
-
-			// Figure out where we need to insert line breaks
-			// so that the text doesn't spill out of the box
-			//? +1 is to account for any more space added from the wrapping
-			int lineBreaks = (int)MathF.Round(textSize.X / boxWidth) + 1;
-			int charactersPerLine = text.Length / lineBreaks;
-
-			// Break the text where needed
-			// TODO: Break the text at the start of the current word
-			// TODO: so that the text isn't cut off in the middle of
-			// TODO: a word (not very readable (rinky))
-			for (int i = 0; i < lineBreaks; i++)
+			// Loop through every word and determine where it 
+			// should go and whatnot
+			// TODO: Bake this then only update if you resize the window
+			int lines = 1;
+			foreach (string word in words)
 			{
-				// Add the new lines
-				//? Using two newlines because raylib is broken or something idk
-				text = text.Insert(charactersPerLine * i, "\n\n");
-			}
+				// Add the new word to the output
+				// and then measure it
+				// TODO: Don't measure for every word
+				string newOutput = output + word + " ";
+				Vector2 textSize = Raylib.MeasureTextEx(Ui.Gabriola, newOutput, fontSize, fontSpacing);	
 
-			// Draw the caption box
-			// Raylib.DrawRectangleV()
+				// If we put in a newline then add the new line
+				//? idk if this actually works
+				if (word.Contains('\n')) lines++;
+
+				// If we have enough room to add the new
+				// word to the current line
+				if (textSize.X < boxWidth) output = newOutput;
+				else
+				{
+					// Drop down a line before adding the word
+					// and also say what the current height is
+					//? Using two newlines because raylib is broken or something idk
+					output += "\n\n" + word + " ";
+					lines++;
+				}
+			}
 			
-			// Draw the text
-			Raylib.DrawTextEx(Ui.Gabriola, text, new Vector2(captionBoxPadding), fontSize, (fontSize / 10f), Color.White);
+			// Calculation crap
+			//? crazy height calculation crap because raylib broken 
+			float height = ((fontSize + lineSpacing) * lines) - lineSpacing;
+			Vector2 size = new Vector2(boxWidth, height);
+			Vector2 position = new Vector2(captionBoxPadding, y);
+
+			// Draw the box and text
+			Raylib.DrawRectangleRounded(new Rectangle(position, size), 0.1f, 10, boxColor);
+			Raylib.DrawTextEx(Ui.Gabriola, output, position, fontSize, fontSpacing, Color.White);
+
+			// Increase the Y for the next caption in the queue
+			y += height + captionBoxMargin;
 		}
 	}
 
