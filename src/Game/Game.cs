@@ -17,7 +17,6 @@ class Game
 		Map.Load();
 
 		Map.Entities.Add(new Player());
-		Map.Entities.Add(new Radio());
 	}
 
 	public static void Update()
@@ -40,6 +39,9 @@ class Game
 
 		// Draw everything
 		Map.Render();
+
+		// TODO: Put this in debug class thingy
+		Raylib.DrawFPS(10, 10);
 
 		// If we're paused then darken the screen
 		// and also say that we're paused
