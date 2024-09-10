@@ -17,6 +17,7 @@ class Game
 		Map.Load();
 
 		Map.Entities.Add(new Player());
+		Map.Entities.Add(new Telly());
 	}
 
 	public static void Update()
