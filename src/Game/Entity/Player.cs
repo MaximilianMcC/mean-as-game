@@ -10,10 +10,10 @@ class Player : Entity
 	public override void Start()
 	{
 		// Set the hitbox size
-		Hitbox = new Rectangle(50, 10, 100f, 80f);
+		Hitbox = new Rectangle(50, 10, 60f, 100f);
 
 		// Load the animations
-		Animations.Add("walk", new Animation("./assets/player-walk.png", 128, 10));
+		Animations.Add("walk", new Animation("./assets/player-walk.png", 128, 8));
 	}
 
 	public override void Update()
@@ -56,6 +56,6 @@ class Player : Entity
 		Utils.DrawTextureOnRectangle(Animations["walk"].GetFrame(), Hitbox, (int)direction, 1);
 
 
-		Raylib.DrawTextEx(Ui.TimesNewRoman, $"position: {Hitbox.Position}\n\nY velocity: {yVelocity}\n\nground: {OnGround}", new Vector2(10, 400), 35f, (35f / 10f), Color.White);
+		Raylib.DrawTextEx(Ui.TimesNewRoman, $"position: {Hitbox.Position}\n\nY velocity: {yVelocity}\n\nground: {OnGround}", new Vector2(10, 500), 35f, (35f / 10f), Color.White);
 	}
 }
