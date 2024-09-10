@@ -20,8 +20,7 @@ class Game
 		Map.Entities.Add(new Player());
 
 		//! debug
-		string captionText = "erhm";
-		DialogueHandler.DisplayCaption(captionText, 10f, 30f);
+		DialogueHandler.DisplayCaption("Clutching up rn", 10d, 3d);
 	}
 
 	public static void Update()
@@ -35,6 +34,7 @@ class Game
 
 		// Update everything
 		Map.Update();
+		DialogueHandler.UpdateCaptions();
 	}
 
 	public static void Render()
