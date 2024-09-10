@@ -21,7 +21,7 @@ class Game
 
 		//! debug
 		string text = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
-		DialogueHandler.DisplayCaption(text, 60d, 10d);
+		DialogueHandler.DisplayCaption(text, 60d);
 	}
 
 	public static void Update()

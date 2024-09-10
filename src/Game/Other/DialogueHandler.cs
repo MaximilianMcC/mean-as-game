@@ -9,19 +9,44 @@ class DialogueHandler
 	// TODO: Don't initialize outside of method
 	private static List<Caption> captions = new List<Caption>();
 
-
+	// Display a caption with an expiration date
 	public static void DisplayCaption(string text, double lettersPerSecond, double expirationDate)
 	{
-		if (ShowCaptions == false) return;
-
-		// Add the new caption to the list
-		captions.Add(new Caption()
+		// Make the caption
+		Caption caption = new Caption()
 		{
 			Text = text,
 			LettersPerSecond = lettersPerSecond,
+			
 			ExpirationDate = expirationDate,
 			BirthDay = Raylib.GetTime()
-		});
+		};
+
+		// Add it to the list
+		captions.Add(caption);
+	}
+
+	// Display a caption without an expiration date
+	public static void DisplayCaption(string text, double lettersPerSecond)
+	{
+		// Make the caption
+		Caption caption = new Caption()
+		{
+			Text = text,
+			LettersPerSecond = lettersPerSecond,
+
+			Immortal = true,
+			BirthDay = Raylib.GetTime()
+		};
+
+		// Add it to the list
+		captions.Add(caption);
+	}
+
+	// Used for if you make an eternal caption
+	private static void ForcefullyRemoveCaption(Caption caption)
+	{
+		captions.Remove(caption);
 	}
 
 	public static void UpdateCaptions()
@@ -47,7 +72,7 @@ class DialogueHandler
 
 			// Check for if the caption has
 			// expired and remove it
-			if (caption.Age > caption.ExpirationDate) captions.Remove(captions[i]);
+			if (caption.Age > caption.ExpirationDate && caption.Immortal == false) captions.Remove(captions[i]);
 			else captions[i] = caption;
 		}
 	}
@@ -57,7 +82,7 @@ class DialogueHandler
 		if (ShowCaptions == false) return;
 
 		// TODO: Put all this stuff in settings
-		const float fontSize = 20f;
+		const float fontSize = 30f;
 		const float fontSpacing = fontSize / 10;
 		const float lineSpacing = fontSize / 2;
 		Color boxColor = new Color(0, 0, 0, 128);
@@ -142,6 +167,7 @@ class DialogueHandler
 		public string CurrentText;
 		public double LettersPerSecond;
 
+		public bool Immortal;
 		public double BirthDay;
 		public double ExpirationDate;
 		public double Age;
