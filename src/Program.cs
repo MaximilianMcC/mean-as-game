@@ -14,6 +14,7 @@ class Program
 		Raylib.SetTraceLogLevel(TraceLogLevel.Warning);
 		Raylib.InitWindow(800, 600, "mean as game (really cool (epic))");
 		Raylib.SetExitKey(KeyboardKey.Null);
+		Raylib.InitAudioDevice();
 
 		Game.Start();
 		while (!Raylib.WindowShouldClose())
@@ -22,6 +23,7 @@ class Program
 			Game.Render();
 		}
 		Game.CleanUp();
+		Raylib.CloseAudioDevice();
 		Raylib.CloseWindow();
 	}
 }
