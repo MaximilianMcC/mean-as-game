@@ -46,4 +46,18 @@ class Entity : GameObject
 
 		} else OnGround = false;
 	}
+
+	public override void Update()
+	{
+		// Jank as physics object thing idk
+		// TODO: Make it so bro can push stuff around
+		ApplyGravity();
+	}
+
+	public override void Render()
+	{
+		// Just draw the very first texture
+		// thats loaded in the game object
+		Utils.DrawTextureOnRectangle(Textures.FirstOrDefault().Value, Hitbox);
+	}
 }

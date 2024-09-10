@@ -3,18 +3,24 @@ using Raylib_cs;
 
 class Game
 {
-	private static Player player;
 	private static List<GameObject> gameObjects;
 	public static bool Paused = false;
 
+	// TODO: Don't put this here
+	public static Texture2D MissingTexture { get; private set; }
+
 	public static void Start()
 	{
+		// Load in the missing texture thingy first
+		MissingTexture = AssetManager.LoadTexture("./assets/missing.png");
+
 		Ui.Load();
 		Map.Load();
-		gameObjects = new List<GameObject>();
 
-		player = new Player();
-		gameObjects.Add(player);
+		gameObjects = new List<GameObject>()
+		{
+			new Player()
+		};
 	}
 
 	public static void Update()
@@ -59,11 +65,16 @@ class Game
 
 	public static void CleanUp()
 	{
+		// Get rid of all the game objects
 		foreach (GameObject gameObject in gameObjects)
 		{
 			gameObject.CleanUp();
 		}
 
+		// Unload all of the ui
 		Ui.CleanUp();
+
+		// Unload the missing texture
+		Raylib.UnloadTexture(MissingTexture);
 	}
 }

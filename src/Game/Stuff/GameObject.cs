@@ -12,6 +12,10 @@ abstract class GameObject
 		Textures = new Dictionary<string, Texture2D>();
 		Animations = new Dictionary<string, Animation>();
 
+		// Add the missing texture to be the first
+		// texture that the game object holds
+		Textures.Values.DefaultIfEmpty(Game.MissingTexture);
+
 		// Automatically run the start method
 		Start();
 	}
