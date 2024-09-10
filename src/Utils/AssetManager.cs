@@ -83,6 +83,18 @@ class AssetManager
 		return sound;
 	}
 
+	public static Music LoadMusic(string path)
+	{
+		// Get the asset byte array and extension
+		byte[] bytes = GetAssetBytes(path, out string extension);
+
+		// Load the music from the data
+		Music music = Raylib.LoadMusicStreamFromMemory(extension, bytes);
+
+		// Give back the sound
+		return music;
+	}
+
 	public static Font LoadFont(string path)
 	{
 		// Get the asset byte array and extension
