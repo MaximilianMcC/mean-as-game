@@ -3,7 +3,13 @@ using Raylib_cs;
 
 class Utils
 {
-	// public readonly int 
+	// TODO: Don't initialize things here
+	public static Random Random = new Random();
+
+	public static string RandomElement(string[] array)
+	{
+		return array[Random.Next(0, array.Length)];
+	}
 
 	public static void DrawTextureOnRectangle(Texture2D texture, Rectangle rectangle)
 	{
