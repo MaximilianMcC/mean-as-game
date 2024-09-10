@@ -3,7 +3,6 @@ using Raylib_cs;
 
 class Game
 {
-	private static List<GameObject> gameObjects;
 	public static bool Paused = false;
 
 	// TODO: Don't put this here
@@ -18,6 +17,7 @@ class Game
 		Map.Load();
 
 		Map.Entities.Add(new Player());
+		Map.Entities.Add(new Radio());
 	}
 
 	public static void Update()

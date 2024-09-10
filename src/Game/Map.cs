@@ -15,7 +15,7 @@ class Map
 			new Rectangle(0, 500, 600, 100),
 
 			// platform thing
-			new Rectangle(300, 350, 200, 20),
+			new Rectangle(300, 400, 200, 20),
 		};
 
 		// More hardcode stuff
