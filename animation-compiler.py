@@ -11,12 +11,13 @@ for path in paths:
 
 	# Ignore anything that isn't a png
 	if not path.endswith(".png"): continue
+	if path.endswith("animation.png"): continue
 	
 	# Load in the image
 	images.append(Image.open(frame_path + path))
 
 # Get how many frames
-frame_count = len(images) - 1
+frame_count = len(images)
 
 # Make the image for the actual texture
 frame_width = images[0].width
@@ -25,7 +26,7 @@ animation = Image.new("RGBA", (frame_count * frame_width, frame_height))
 
 # Paste all of the image onto the
 # new animation image thingy yk
-for i in range(len(images) - 1):
+for i in range(frame_count):
 	animation.paste(images[i], (frame_width * i, 0))
 
 # Save the image
