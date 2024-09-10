@@ -30,11 +30,20 @@ class DialogueHandler
 		for (int i = 0; i < captions.Count; i++)
 		{
 			// Get the current caption
+			//? Doing this because its immutable for some reason
 			Caption caption = captions[i];
 
 			// Update the captions age
 			double currentTime = Raylib.GetTime();
 			caption.Age = currentTime - caption.BirthDay;
+
+			// Calculate the number of letters to show
+			// based on how old the caption is
+			int lettersToShow = (int)(caption.Age * caption.LettersPerSecond);
+			if (lettersToShow > caption.Text.Length) lettersToShow = caption.Text.Length;
+
+			// Set the caption text
+			caption.CurrentText = caption.Text.Substring(0, lettersToShow);
 
 			// Check for if the caption has
 			// expired and remove it
@@ -67,11 +76,12 @@ class DialogueHandler
 		{
 			// Get the text
 			int lines;
-			string text = WrapText(caption.Text, boxWidth, fontSize, fontSpacing, out lines);
+			string text = WrapText(caption.CurrentText, boxWidth, fontSize, fontSpacing, out lines);
 			
 			// Calculation crap
 			//? crazy height calculation crap because raylib broken 
 			float height = ((fontSize + lineSpacing) * lines) - lineSpacing;
+			y -= height;
 			Vector2 size = new Vector2(boxWidth, height);
 			Vector2 position = new Vector2(captionBoxPadding, y);
 
@@ -129,6 +139,7 @@ class DialogueHandler
 		// TODO: shown letters could be calculated from age
 		// TODO: Don't use double (use float)
 		public string Text;
+		public string CurrentText;
 		public double LettersPerSecond;
 
 		public double BirthDay;
