@@ -36,9 +36,15 @@ class Map
 		// check for if there was collision
 		foreach (Entity entity in Entities)
 		{
-			// Check for if the entity isn't its self
-			// (can't collide with yourself)
+			// Check for if the thingy even has collision
+			if (entity.HasEntityCollision == false) continue;
+
+			// Don't let bro collide with themself
 			if (entity == entityCheckingCollision) continue;
+			
+
+
+			// If there was collision then return
 			if (Raylib.CheckCollisionRecs(hitbox, entity.Hitbox)) return true;
 		}
 

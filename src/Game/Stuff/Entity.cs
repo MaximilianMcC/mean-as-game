@@ -6,6 +6,7 @@ class Entity : GameObject
 	public Rectangle Hitbox;
 	public float yVelocity;
 	public bool OnGround;
+	public bool HasEntityCollision = true;
 
 	// TODO: Actually resolve collisions
 	protected bool CheckCollisionAndMove(Vector2 newPosition)
@@ -54,6 +55,7 @@ class Entity : GameObject
 		ApplyGravity();
 	}
 
+	// todo: make Render();, and RenderDebug(); and then call a Draw() method that runs the render methods (this or gameObject)
 	public override void Render()
 	{
 		// Just draw the very first texture
