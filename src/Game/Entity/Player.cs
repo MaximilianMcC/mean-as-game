@@ -13,7 +13,7 @@ class Player : Entity
 		Hitbox = new Rectangle(50, 10, 100f, 80f);
 
 		// Load the animations
-		Animations.Add("walk", new Animation("./assets/player-walk.png", 64, 10));
+		Animations.Add("walk", new Animation("./assets/player-walk.png", 128, 10));
 	}
 
 	public override void Update()
