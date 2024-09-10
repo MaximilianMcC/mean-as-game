@@ -17,10 +17,7 @@ class Game
 		Ui.Load();
 		Map.Load();
 
-		gameObjects = new List<GameObject>()
-		{
-			new Player()
-		};
+		Map.Entities.Add(new Player());
 	}
 
 	public static void Update()
@@ -33,10 +30,7 @@ class Game
 		if (Paused == true) return;
 
 		// Update everything
-		foreach (GameObject gameObject in gameObjects)
-		{
-			gameObject.Update();
-		}
+		Map.Update();
 	}
 
 	public static void Render()
@@ -46,10 +40,6 @@ class Game
 
 		// Draw everything
 		Map.Render();
-		foreach (GameObject gameObject in gameObjects)
-		{
-			gameObject.Render();
-		}
 
 		// If we're paused then darken the screen
 		// and also say that we're paused
@@ -65,14 +55,8 @@ class Game
 
 	public static void CleanUp()
 	{
-		// Get rid of all the game objects
-		foreach (GameObject gameObject in gameObjects)
-		{
-			gameObject.CleanUp();
-		}
-
-		// Unload all of the ui
 		Ui.CleanUp();
+		Map.CleanUp();
 
 		// Unload the missing texture
 		Raylib.UnloadTexture(MissingTexture);

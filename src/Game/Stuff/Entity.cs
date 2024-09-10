@@ -15,7 +15,7 @@ class Entity : GameObject
 		newHitbox.Position += newPosition;
 
 		// If there was no collision then use the new hitbox
-		if (Map.CollisionWithMap(newHitbox) == false)
+		if (Map.CollisionWithMap(newHitbox, this) == false)
 		{
 			// There was no collision (Move)
 			Hitbox = newHitbox;
