@@ -4,7 +4,7 @@ using Raylib_cs;
 class Player : Entity
 {
 	private float speed = 400f;
-	private float jumpForce = 800f;
+	private float jumpForce = 600f;
 	private float direction;
 
 	public override void Start()
