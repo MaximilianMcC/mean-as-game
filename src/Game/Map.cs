@@ -3,8 +3,9 @@ using Raylib_cs;
 class Map
 {
 	public static float Gravity = 1500f;
-	private static List<Rectangle> platforms;
 	public static List<Entity> Entities;
+	private static List<Rectangle> platforms;
+	private static Texture2D background;
 
 	public static void Load()
 	{
@@ -20,6 +21,9 @@ class Map
 
 		// More hardcode stuff
 		Entities = new List<Entity>();
+
+		// Hardcode background
+		background = AssetManager.LoadTexture("./assets/map/background.png");
 	}
 
 	public static bool CollisionWithMap(Rectangle hitbox, Entity entityCheckingCollision = null)
@@ -63,6 +67,9 @@ class Map
 
 	public static void Render()
 	{
+		// Draw the background
+		Utils.DrawTextureOnRectangle(background, Utils.GetWindowRectangle());
+
 		// Draw all the platforms
 		foreach (Rectangle rectangle in platforms)
 		{
@@ -83,5 +90,9 @@ class Map
 		{
 			entity.CleanUp();
 		}
+
+		// Unload the background
+		// TODO: Use asset manager thingy idk
+		Raylib.UnloadTexture(background);
 	}
 }
