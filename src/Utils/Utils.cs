@@ -65,6 +65,10 @@ class Utils
 	}
 
 
+	public static Rectangle GetWindowRectangle()
+	{
+		return new Rectangle(0, 0, Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
+	}
 
 
 	public static Rectangle GetTextureRectangle(Texture2D texture)
